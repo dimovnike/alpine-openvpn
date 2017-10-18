@@ -47,12 +47,16 @@ iptables -A OUTPUT -o eth0 -d $REMOTE -j ACCEPT
 # allow output on tun0
 iptables -A OUTPUT -o tun0 -j ACCEPT
 
+# make sure default route is deleted forever
+ip ro del default
+
+# add a route only for the VPN server
 ip ro add $REMOTE via $DEFAULTGW dev eth0
 
 /usr/sbin/openvpn --script-security 2 --up /usr/local/bin/openvpn-up.sh \
 	--status /etc/openvpn_host/openvpnconfig.status 10 --redirect-gateway local \
 	--cd /etc/openvpn_host --config $OVPNCONF
 
-# take the whole container with us
+# if openvpn exits, take the whole container with us
 echo openvpn died
 kill 1 # kill the supervisor so the container dies

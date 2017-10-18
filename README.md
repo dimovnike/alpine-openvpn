@@ -1,4 +1,4 @@
-# Openvpn in a container.
+# Openvpn client in a container.
 Openvpn is set up in a way that no direct connection is allowed from the container (we modify routes and set iptables). 
 
 ### Purpose
